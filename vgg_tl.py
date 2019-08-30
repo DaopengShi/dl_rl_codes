@@ -15,10 +15,10 @@ transform = transforms.Compose([
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])])
 trainset = datasets.ImageFolder(root='/home/holmessherlock734/data/Fruit-Images-Dataset/Training', transform=transform)
-trainloader = torch.utils.data.DataLoader(trainset, batch_size=200,
+trainloader = torch.utils.data.DataLoader(trainset, batch_size=150,
                                           shuffle=True, num_workers=4)
 testset = datasets.ImageFolder(root='/home/holmessherlock734/data/Fruit-Images-Dataset/Test', transform=transform)
-testloader = torch.utils.data.DataLoader(testset, batch_size=200,
+testloader = torch.utils.data.DataLoader(testset, batch_size=150,
                                          shuffle=False, num_workers=4)
 
 model_ft = models.vgg16(pretrained=True)
@@ -40,15 +40,18 @@ evaluator = create_supervised_evaluator(model_ft,
 
 @trainer.on(Events.ITERATION_COMPLETED)
 def log_training_loss(trainer):
-    print("Epoch[{}] Loss: {:.2f}".format(trainer.state.epoch, trainer.state.output))
+    message = f"Epoch[{trainer.state.epoch}] " \
+              f"Iteration[{trainer.state.iteration}] " \
+              f"Loss: {trainer.state.output:.10f}"
+    print(message)
 
 @trainer.on(Events.EPOCH_COMPLETED)
 def log_training_results(trainer):
     evaluator.run(trainloader)
     metrics = evaluator.state.metrics
     message = f"Training Results - Epoch: {trainer.state.epoch}  " \
-              f"Avg accuracy: {metrics['accuracy']:.2f} " \
-              f"Avg loss: {metrics['CrossEntropy']:.2f}"
+              f"Avg accuracy: {metrics['accuracy']:.10f} " \
+              f"Avg loss: {metrics['CrossEntropy']:.10f}"
     print(message)
 
 @trainer.on(Events.EPOCH_COMPLETED)
@@ -56,9 +59,9 @@ def log_validation_results(trainer):
     evaluator.run(testloader)
     metrics = evaluator.state.metrics
     message = f"Validation Results - Epoch: {trainer.state.epoch}  " \
-              f"Avg accuracy: {metrics['accuracy']:.2f} " \
-              f"Avg loss: {metrics['CrossEntropy']:.2f}"
+              f"Avg accuracy: {metrics['accuracy']:.10f} " \
+              f"Avg loss: {metrics['CrossEntropy']:.10f}"
     print(message)
 
-epochs = 10
+epochs = 1
 trainer.run(trainloader, max_epochs=epochs)
