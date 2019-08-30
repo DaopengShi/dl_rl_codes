@@ -14,11 +14,11 @@ transform = transforms.Compose([
     transforms.Resize(224),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])])
-trainset = datasets.ImageFolder(root='/content/gdrive/My Drive/fruits/fruits-360/Training', transform=transform)
-trainloader = torch.utils.data.DataLoader(trainset, batch_size=32,
+trainset = datasets.ImageFolder(root='/home/holmessherlock734/data/Fruit-Images-Dataset/Training', transform=transform)
+trainloader = torch.utils.data.DataLoader(trainset, batch_size=1000,
                                           shuffle=True, num_workers=2)
-testset = datasets.ImageFolder(root='/content/gdrive/My Drive/fruits/fruits-360/Test', transform=transform)
-testloader = torch.utils.data.DataLoader(testset, batch_size=32,
+testset = datasets.ImageFolder(root='/home/holmessherlock734/data/Fruit-Images-Dataset/Test', transform=transform)
+testloader = torch.utils.data.DataLoader(testset, batch_size=1000,
                                          shuffle=False, num_workers=2)
 
 model_ft = models.vgg16(pretrained=True)
