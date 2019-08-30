@@ -29,6 +29,7 @@ optimizer = optim.SGD(model_ft.parameters(), lr=0.001, momentum=0.9)
 loss = nn.CrossEntropyLoss()
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+print(device)
 
 trainer = create_supervised_trainer(model_ft, optimizer, loss, device=device)
 evaluator = create_supervised_evaluator(model_ft,
