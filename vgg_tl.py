@@ -15,15 +15,15 @@ transform = transforms.Compose([
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])])
 trainset = datasets.ImageFolder(root='/home/holmessherlock734/data/Fruit-Images-Dataset/Training', transform=transform)
-trainloader = torch.utils.data.DataLoader(trainset, batch_size=1000,
-                                          shuffle=True, num_workers=2)
+trainloader = torch.utils.data.DataLoader(trainset, batch_size=200,
+                                          shuffle=True, num_workers=4)
 testset = datasets.ImageFolder(root='/home/holmessherlock734/data/Fruit-Images-Dataset/Test', transform=transform)
-testloader = torch.utils.data.DataLoader(testset, batch_size=1000,
-                                         shuffle=False, num_workers=2)
+testloader = torch.utils.data.DataLoader(testset, batch_size=200,
+                                         shuffle=False, num_workers=4)
 
 model_ft = models.vgg16(pretrained=True)
 num_ftrs = model_ft.classifier[0].in_features
-model_ft.classifier = nn.Linear(num_ftrs, 114)
+model_ft.classifier = nn.Linear(num_ftrs, 118)
 
 optimizer = optim.SGD(model_ft.parameters(), lr=0.001, momentum=0.9)
 loss = nn.CrossEntropyLoss()
